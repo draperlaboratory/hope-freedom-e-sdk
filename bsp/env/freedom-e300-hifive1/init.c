@@ -149,16 +149,18 @@ static unsigned long __attribute__((noinline)) measure_cpu_freq(size_t n)
     start_mtime = mtime_lo();
   } while (start_mtime == tmp);
 
-  unsigned long start_mcycle = read_csr(mcycle);
-
-  do {
-    delta_mtime = mtime_lo() - start_mtime;
-  } while (delta_mtime < n);
-
-  unsigned long delta_mcycle = read_csr(mcycle) - start_mcycle;
-
-  return (delta_mcycle / delta_mtime) * mtime_freq
-         + ((delta_mcycle % delta_mtime) * mtime_freq) / delta_mtime;
+//  unsigned long start_mcycle = read_csr(mcycle);
+//  unsigned long start_mcycle = read_csr(mcycle);
+//
+//  do {
+//    delta_mtime = mtime_lo() - start_mtime;
+//  } while (delta_mtime < n);
+//
+//  unsigned long delta_mcycle = read_csr(mcycle) - start_mcycle;
+//
+//  return (delta_mcycle / delta_mtime) * mtime_freq
+//         + ((delta_mcycle % delta_mtime) * mtime_freq) / delta_mtime;
+    return 100000;
 }
 
 unsigned long get_cpu_freq()
@@ -224,10 +226,10 @@ void _init()
 
   printf("core freq at %d Hz\n", get_cpu_freq());
 
-  write_csr(mtvec, &trap_entry);
+  write_csr(mtvect, &trap_entry);
   if (read_csr(misa) & (1 << ('F' - 'A'))) { // if F extension is present
     write_csr(mstatus, MSTATUS_FS); // allow FPU instructions without trapping
-    write_csr(fcsr, 0); // initialize rounding mode, undefined at reset
+    //write_csr(fcsr, 0); // initialize rounding mode, undefined at reset
   }
   #endif
   
