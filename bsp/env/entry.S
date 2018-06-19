@@ -44,15 +44,15 @@ trap_entry:
   STORE x30, 30*REGBYTES(sp)
   STORE x31, 31*REGBYTES(sp)
 
-  csrr a0, mcause
-  csrr a1, mepc
+  csrr a0, 0x342 //mcause
+  csrr a1, 0x341 //mepc
   mv a2, sp
   call handle_trap
-  csrw mepc, a0
+  csrw 0x341, a0 //mepc
 
   # Remain in M-mode after mret
   li t0, MSTATUS_MPP
-  csrs mstatus, t0
+  csrs 0x300, t0 //mstatus
 
   LOAD x1, 1*REGBYTES(sp)
   LOAD x2, 2*REGBYTES(sp)
