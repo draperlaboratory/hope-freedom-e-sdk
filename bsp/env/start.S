@@ -61,11 +61,10 @@ _start:
 
 	/* Call global constructors */
 	//la a0, __libc_fini_array
-	//lui a0, %hi(__libc_fini_array)
-	lui a0, %hi(__libc_exit_fini)
-	addi a0, a0, %lo(__libc_exit_fini)
+	lui a0, %hi(__libc_fini_array)
+	addi a0, a0, %lo(__libc_fini_array)
 	call atexit
-	call __libc_start_init
+	call __libc_init_array
 
 #ifndef __riscv_float_abi_soft
 	/* Enable FPU */
