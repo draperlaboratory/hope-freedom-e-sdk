@@ -114,11 +114,11 @@ toolchain_prefix := $(toolchain_builddir)/prefix
 
 RISCV_PATH ?= $(toolchain_prefix)
 
-RISCV_GCC     := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-gcc)
-RISCV_GXX     := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-g++)
-RISCV_OBJDUMP := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-objdump)
-RISCV_GDB     := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-gdb)
-RISCV_AR      := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-ar)
+RISCV_GCC     := $(abspath $(RISCV_PATH)/bin/clang)
+RISCV_GXX     := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-g++)
+RISCV_OBJDUMP := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-objdump)
+RISCV_GDB     := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-gdb)
+RISCV_AR      := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-ar)
 
 PATH := $(abspath $(RISCV_PATH)/bin):$(PATH)
 
@@ -146,6 +146,7 @@ $(builddir)/riscv-gnu-toolchain/%-elf/configure.stamp:
 		--prefix=$(abspath $(dir $@)/prefix) \
 		--disable-linux \
 		--enable-multilib \
+		--with-arch=rv32ima \
 		--with-cmodel=medany \
 		--with-libgcc-cmodel
 	date > $@

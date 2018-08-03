@@ -14,39 +14,55 @@ _start:
 	.cfi_undefined ra
 .option push
 .option norelax
-	la gp, __global_pointer$
+	//la gp, __global_pointer$
+	lui gp, %hi(__global_pointer$)
+	addi gp, gp, %lo(__global_pointer$)
 .option pop
-	la sp, _sp
+	//la sp, _sp
+	lui sp, %hi(_sp)
+	addi sp, sp, %lo(_sp)
 
 #if defined(ENABLE_SMP)
 	smp_pause(t0, t1)
 #endif
 
 	/* Load data section */
-	la a0, _data_lma
-	la a1, _data
-	la a2, _edata
+	//la a0, _data_lma
+	lui a0, %hi(_data_lma)
+	addi a0, a0, %lo(_data_lma)
+	//la a1, _data
+	lui a1, %hi(_data)
+	addi a1, a1, %lo(_data)
+	//la a2, _edata
+	lui a2, %hi(_edata)
+	addi a2, a2, %lo(_edata)
 	bgeu a1, a2, 2f
 1:
-	lw t0, (a0)
-	sw t0, (a1)
+	lw t0, 0(a0)
+	sw t0, 0(a1)
 	addi a0, a0, 4
 	addi a1, a1, 4
 	bltu a1, a2, 1b
 2:
 
 	/* Clear bss section */
-	la a0, __bss_start
-	la a1, _end
+	//la a0, __bss_start
+	lui a0, %hi(__bss_start)
+	addi a0, a0, %lo(__bss_start)
+	//la a1, _end
+	lui a1, %hi(_end)
+	addi a1, a1, %lo(_end)
 	bgeu a0, a1, 2f
 1:
-	sw zero, (a0)
+	sw zero, 0(a0)
 	addi a0, a0, 4
 	bltu a0, a1, 1b
 2:
 
 	/* Call global constructors */
-	la a0, __libc_fini_array
+	//la a0, __libc_fini_array
+	lui a0, %hi(__libc_fini_array)
+	addi a0, a0, %lo(__libc_fini_array)
 	call atexit
 	call __libc_init_array
 

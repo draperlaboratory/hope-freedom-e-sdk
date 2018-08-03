@@ -38,7 +38,6 @@ CLEAN_OBJS += $(TARGET) $(LINK_OBJS)
 CFLAGS += -g
 CFLAGS += -march=$(RISCV_ARCH)
 CFLAGS += -mabi=$(RISCV_ABI)
-CFLAGS += -mcmodel=medany
 
 $(TARGET): $(LINK_OBJS) $(LINK_DEPS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(LINK_OBJS) -o $@ $(LDFLAGS)
@@ -47,7 +46,7 @@ $(ASM_OBJS): %.o: %.S $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 $(C_OBJS): %.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) $(INCLUDES) -include sys/cdefs.h -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 .PHONY: clean
 clean:
