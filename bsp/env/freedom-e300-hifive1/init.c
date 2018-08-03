@@ -226,8 +226,9 @@ void _init()
 
   write_csr(0x305, &trap_entry); //mtvect
   if (read_csr(0x301) & (1 << ('F' - 'A'))) { // if F extension is present //misa
+    uint32_t tmp = 0;
     write_csr(0x300, MSTATUS_FS); // allow FPU instructions without trapping //mstatus
-    write_csr(0x3, 0); // initialize rounding mode, undefined at reset fcsr
+    write_csr(0x3, tmp); // initialize rounding mode, undefined at reset fcsr
   }
   #endif
   
