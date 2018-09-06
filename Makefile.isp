@@ -2,3 +2,5 @@ ISP_PREFIX ?= /opt/isp
 
 install:
 	cp -r bsp $(ISP_PREFIX)/hifive_bsp
+
+clean:
