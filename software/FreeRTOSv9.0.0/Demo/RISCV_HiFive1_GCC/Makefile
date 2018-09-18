@@ -38,7 +38,7 @@ CFLAGS = \
 
 AFLAGS = \
 	$(WARNINGS) $(INCLUDES) $(DEFINES) \
-	-Wall -c -Wa,-march=rv32imac -x assembler-with-cpp
+	-Wall -c -Wa,-march=rv32ima -x assembler-with-cpp
 
 
 

@@ -102,16 +102,16 @@ clean:
 tools: riscv-gnu-toolchain openocd
 
 # Pointers to various important tools in the toolchain.
-toolchain_builddir := $(builddir)/riscv-gnu-toolchain/riscv64-unknown-elf
+toolchain_builddir := $(builddir)/riscv-gnu-toolchain/riscv32-unknown-elf
 toolchain_prefix := $(toolchain_builddir)/prefix
 
-RISCV_PATH ?= $(toolchain_prefix)
+RISCV_PATH ?= /opt/isp
 
-RISCV_GCC     := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-gcc)
-RISCV_GXX     := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-g++)
-RISCV_OBJDUMP := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-objdump)
-RISCV_GDB     := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-gdb)
-RISCV_AR      := $(abspath $(RISCV_PATH)/bin/riscv64-unknown-elf-ar)
+RISCV_GCC     := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-gcc)
+RISCV_GXX     := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-g++)
+RISCV_OBJDUMP := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-objdump)
+RISCV_GDB     := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-gdb)
+RISCV_AR      := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-ar)
 
 PATH := $(abspath $(RISCV_PATH)/bin):$(PATH)
 
