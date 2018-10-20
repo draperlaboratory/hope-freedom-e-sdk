@@ -112,9 +112,10 @@ tools: riscv-gnu-toolchain openocd
 toolchain_builddir := $(builddir)/riscv-gnu-toolchain/riscv64-unknown-elf
 toolchain_prefix := $(toolchain_builddir)/prefix
 
-RISCV_PATH ?= $(toolchain_prefix)
+RISCV_PATH ?= /opt/isp
 
-RISCV_GCC     := $(abspath $(RISCV_PATH)/bin/clang)
+#RISCV_GCC     := $(abspath $(RISCV_PATH)/bin/clang)
+RISCV_GCC     := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-gcc)
 RISCV_GXX     := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-g++)
 RISCV_OBJDUMP := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-objdump)
 RISCV_GDB     := $(abspath $(RISCV_PATH)/bin/riscv32-unknown-elf-gdb)
