@@ -28,8 +28,8 @@
 # error
 #endif
 
-#define MEM_METHOD MEM_STACK
-#define MEM_LOCATION "STACK"
+#define MEM_METHOD MEM_MALLOC
+#define MEM_LOCATION "HEAP"
 
 #define MAIN_HAS_NOARGC 0
 #define MAIN_HAS_NORETURN 0

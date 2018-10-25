@@ -143,7 +143,7 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 			results[i].size=malloc_override;
 		else
 			results[i].size=TOTAL_DATA_SIZE;
-		results[i].memblock[0]=portable_malloc(results[i].size);
+		results[i].memblock[0]=malloc(results[i].size);
 		results[i].seed1=results[0].seed1;
 		results[i].seed2=results[0].seed2;
 		results[i].seed3=results[0].seed3;
@@ -347,7 +347,7 @@ MAIN_RETURN_TYPE main(int argc, char *argv[]) {
 
 #if (MEM_METHOD==MEM_MALLOC)
 	for (i=0 ; i<MULTITHREAD; i++) 
-		portable_free(results[i].memblock[0]);
+		free(results[i].memblock[0]);
 #endif
 	/* And last call any target specific code for finalizing */
 	portable_fini(&(results[0].port));
