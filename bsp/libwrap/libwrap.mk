@@ -44,6 +44,7 @@ LINK_DEPS += $(LIBWRAP)
 LDFLAGS += $(foreach s,$(LIBWRAP_SYMS),-Wl,--wrap=$(s))
 LDFLAGS += $(foreach s,$(LIBWRAP_SYMS),-Wl,--wrap=_$(s))
 LDFLAGS += -L. -Wl,--start-group -lwrap -lc -Wl,--end-group
+LDFLAGS += -Wl,--undefined=pvPortMalloc -Wl,--undefined=pvPortFree
 
 CLEAN_OBJS += $(LIBWRAP_OBJS)
 
