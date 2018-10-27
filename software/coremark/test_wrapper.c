@@ -34,6 +34,15 @@
 // include malloc wrappers
 #include "mem.h"
 
+#define SIFIVE_TEST_CTRL_ADDR  0x100000
+
+enum {
+        SIFIVE_TEST_FAIL = 0x3333,
+        SIFIVE_TEST_PASS = 0x5555,
+};
+
+static volatile uint32_t *test;
+
 /*
  * Hello world sanity test to check we can execute code i.e. main and 
  *     call printf
@@ -45,6 +54,13 @@ int test_main(void)
     coremark_main();
     
     test_pass();
-    return test_done();
+    test_done();
+
+    test = (uint32_t *)(void *)SIFIVE_TEST_CTRL_ADDR;
+    *test = SIFIVE_TEST_PASS;
+    while (1) {
+        asm volatile("");
+    }
+
   }
 
