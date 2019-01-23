@@ -39,16 +39,18 @@ LIBWRAP_SYMS := malloc free \
 
 LIBWRAP := libwrap.a
 
-LINK_DEPS += $(LIBWRAP)
+ISP_DEPS += $(LIBWRAP)
 
-LDFLAGS += $(foreach s,$(LIBWRAP_SYMS),-Wl,--wrap=$(s))
-LDFLAGS += $(foreach s,$(LIBWRAP_SYMS),-Wl,--wrap=_$(s))
-LDFLAGS += -L. -Wl,--start-group -lwrap -lc -Wl,--end-group
-LDFLAGS += -Wl,--undefined=pvPortMalloc -Wl,--undefined=pvPortFree
+ISP_LDFLAGS += $(foreach s,$(LIBWRAP_SYMS),-Wl,--wrap=$(s))
+ISP_LDFLAGS += $(foreach s,$(LIBWRAP_SYMS),-Wl,--wrap=_$(s))
+ISP_LDFLAGS += -L. -Wl,--start-group -lwrap -lc -Wl,--end-group
+ISP_LDFLAGS += -Wl,--undefined=pvPortMalloc -Wl,--undefined=pvPortFree
 
-CLEAN_OBJS += $(LIBWRAP_OBJS)
+ISP_CLEAN += $(LIBWRAP_OBJS) $(LIBWRAP)
 
-$(LIBWRAP_OBJS): %.o: %.c $(HEADERS)
+all:
+
+$(LIBWRAP_OBJS): %.o: %.c $(ISP_HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 $(LIBWRAP): $(LIBWRAP_OBJS)
