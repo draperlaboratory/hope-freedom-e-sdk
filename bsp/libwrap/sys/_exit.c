@@ -6,7 +6,7 @@
 
 void __wrap_exit(int code)
 {
-  const char message[] = "\nProgam has exited with code:";
+  const char message[] = "\nProgram has exited with code:";
 
   write(STDERR_FILENO, message, sizeof(message) - 1);
   write_hex(STDERR_FILENO, code);
