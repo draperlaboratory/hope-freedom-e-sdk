@@ -21,8 +21,6 @@ ISP_INCLUDES += -I$(BSP_BASE)/drivers/
 ISP_INCLUDES += -I$(ENV_DIR)
 ISP_INCLUDES += -I$(PLATFORM_DIR)
 
-TOOL_DIR = $(BSP_BASE)/../toolchain/bin
-
 ISP_LDFLAGS += -T $(LINKER_SCRIPT) -nostartfiles
 ISP_LDFLAGS += -L$(ENV_DIR)
 

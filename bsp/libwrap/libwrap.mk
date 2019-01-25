@@ -37,13 +37,13 @@ LIBWRAP_SYMS := malloc free \
 	execve fork getpid kill wait \
 	isatty times sbrk _exit puts
 
-LIBWRAP := libwrap.a
+LIBWRAP := $(LIBWRAP_DIR)/libwrap.a
 
 ISP_DEPS += $(LIBWRAP)
 
 ISP_LDFLAGS += $(foreach s,$(LIBWRAP_SYMS),-Wl,--wrap=$(s))
 ISP_LDFLAGS += $(foreach s,$(LIBWRAP_SYMS),-Wl,--wrap=_$(s))
-ISP_LDFLAGS += -L. -Wl,--start-group -lwrap -lc -Wl,--end-group
+ISP_LDFLAGS += -L$(LIBWRAP_DIR) -Wl,--start-group -lwrap -lc -Wl,--end-group
 ISP_LDFLAGS += -Wl,--undefined=pvPortMalloc -Wl,--undefined=pvPortFree
 
 ISP_CLEAN += $(LIBWRAP_OBJS) $(LIBWRAP)
@@ -51,7 +51,7 @@ ISP_CLEAN += $(LIBWRAP_OBJS) $(LIBWRAP)
 all:
 
 $(LIBWRAP_OBJS): %.o: %.c $(ISP_HEADERS)
-	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+	$(CC) $(ISP_CFLAGS) $(ISP_INCLUDES) -c -o $@ $<
 
 $(LIBWRAP): $(LIBWRAP_OBJS)
 	$(AR) rcs $@ $^
