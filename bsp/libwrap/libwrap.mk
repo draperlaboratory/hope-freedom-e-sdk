@@ -6,8 +6,10 @@ _SIFIVE_MK_LIBWRAP := # defined
 LIBWRAP_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
 LIBWRAP_DIR := $(LIBWRAP_DIR:/=)
 
+MALLOC_VERSION ?= malloc
+
 LIBWRAP_SRCS := \
-	stdlib/malloc.c \
+	stdlib/$(MALLOC_VERSION).c \
 	sys/open.c \
 	sys/lseek.c \
 	sys/read.c \
