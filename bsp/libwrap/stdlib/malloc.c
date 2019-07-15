@@ -265,7 +265,7 @@ void * pvPortMalloc( size_t xWantedSize )
   }
 
   if(pvReturn)
-    pvReturn = dover_tag(pvReturn, xWantedSize - heapSTRUCT_SIZE);
+    pvReturn = dover_tag(pvReturn, pxBlock->xBlockSize - heapSTRUCT_SIZE);
   //        else
   //          printk("malloc allocation failure, size = %d\n", xWantedSize);
 
