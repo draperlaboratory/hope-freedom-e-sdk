@@ -185,6 +185,16 @@ static void uart_init(size_t baud_rate)
   UART0_REG(UART_REG_RXCTRL) |= UART_RXEN;
 }
 
+void handle_pipe_violation()
+{
+   const uint32_t fail = 0x3333;
+   uint32_t *td_addr = TEST_MEM_ADDR;
+
+   printf("Bare PIPE Violation.\n");
+   printf("MSG:  End test.\n");
+
+   *td_addr = fail;
+}
 
 
 #ifdef USE_PLIC
@@ -197,7 +207,11 @@ extern void handle_m_time_interrupt();
 
 uintptr_t handle_trap(uintptr_t mcause, uintptr_t epc)
 {
-  if (0){
+  if (!(mcause & MCAUSE_INT)) {
+     if ((mcause & MCAUSE_CAUSE) == CAUSE_PIPE_VIOLATION) {
+        handle_pipe_violation();
+     }
+  } else if (0){
 #ifdef USE_PLIC
     // External Machine-Level interrupt from PLIC
   } else if ((mcause & MCAUSE_INT) && ((mcause & MCAUSE_CAUSE) == IRQ_M_EXT)) {
