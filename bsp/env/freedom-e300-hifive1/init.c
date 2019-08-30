@@ -232,6 +232,10 @@ void _init()
     write_csr(0x300, MSTATUS_FS); // allow FPU instructions without trapping //mstatus
     write_csr(0x3, tmp); // initialize rounding mode, undefined at reset fcsr
   }
+
+  if (read_csr(0x301) & (1 << ('P' - 'A'))) { // if P extension is present //misa
+       printf("Protected by the PIPE!\n");
+  }
   #endif
   
 }
