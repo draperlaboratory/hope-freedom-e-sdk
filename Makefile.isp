@@ -2,6 +2,8 @@ ISP_PREFIX ?= $(HOME)/.local/isp/
 
 install:
 	mkdir -p $(ISP_PREFIX)/hifive_bsp
-	cp -r bsp/* $(ISP_PREFIX)/hifive_bsp/
+	cp -r freedom-e-sdk/bsp/* $(ISP_PREFIX)/hifive_bsp/
+	mkdir -p $(ISP_PREFIX)/vcu118_bsp
+	cp -r vcu118/* $(ISP_PREFIX)/vcu118_bsp/
 
 clean:
