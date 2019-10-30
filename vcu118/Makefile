@@ -9,6 +9,7 @@ LIB_TARGET = libvcu118.a
 
 CFLAGS += -I$(ISP_PREFIX)/include \
           -I$(BASE_DIR) \
+          -I$(BASE_DIR)/wrap \
           -I$(BASE_DIR)/xilinx/common \
           -I$(BASE_DIR)/xilinx/uartns550 \
           -ffunction-sections \
@@ -16,10 +17,11 @@ CFLAGS += -I$(ISP_PREFIX)/include \
 
 C_SRCS = init.c \
 				 uart.c \
-				 wrap_isatty.c \
-				 wrap_printf.c \
-				 wrap_puts.c \
-				 wrap_write.c \
+				 wrap/isatty.c \
+				 wrap/malloc.c \
+				 wrap/printf.c \
+				 wrap/puts.c \
+				 wrap/write.c \
 			   xilinx/common/xbasic_types.c \
 				 xilinx/common/xil_io.c \
 				 xilinx/common/xil_assert.c \
