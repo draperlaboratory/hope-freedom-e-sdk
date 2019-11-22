@@ -21,6 +21,7 @@ C_SRCS = init.c \
 				 wrap/malloc.c \
 				 wrap/printf.c \
 				 wrap/puts.c \
+				 wrap/read.c \
 				 wrap/write.c \
 			   xilinx/common/xbasic_types.c \
 				 xilinx/common/xil_io.c \

@@ -4,7 +4,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "weak_under_alias.h"
-#include "wrap_puts.h"
+#include "puts.h"
 
 int __wrap_printf(const char *s, ...)
 {
