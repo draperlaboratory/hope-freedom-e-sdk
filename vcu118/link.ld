@@ -104,6 +104,8 @@ SECTIONS {
 		*(.text.*);
 	} > imem
 
+	.tohost ALIGN(0x1000) : { *(.tohost) }
+
 	.init : {
 	   KEEP (*(.init))
 	} > imem
