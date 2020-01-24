@@ -16,6 +16,7 @@ CFLAGS += -I$(ISP_PREFIX)/include \
           -fno-builtin-printf
 
 C_SRCS = init.c \
+				 time.c \
 				 uart.c \
 				 wrap/isatty.c \
 				 wrap/malloc.c \
