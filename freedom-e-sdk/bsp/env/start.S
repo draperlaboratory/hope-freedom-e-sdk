@@ -15,13 +15,15 @@ _start:
 	.cfi_undefined ra
 .option push
 .option norelax
-	//la gp, __global_pointer$
-	lui gp, %hi(__global_pointer$)
-	addi gp, gp, %lo(__global_pointer$)
+1:
+   //la gp, _global_pointer$
+   auipc gp, %pcrel_hi(__global_pointer$)
+	addi gp, gp, %pcrel_lo(1b)
 .option pop
 	//la sp, _sp
-	lui sp, %hi(_sp)
-	addi sp, sp, %lo(_sp)
+1:
+   auipc sp, %pcrel_hi(_sp)
+	addi sp, sp, %pcrel_lo(1b)
 
 #if defined(ENABLE_SMP)
 	smp_pause(t0, t1)
@@ -29,14 +31,17 @@ _start:
 
 	/* Load data section */
 	//la a0, _data_lma
-	lui a0, %hi(_data_lma)
-	addi a0, a0, %lo(_data_lma)
+1:
+   auipc a0, %pcrel_hi(_data_lma)
+	addi a0, a0, %pcrel_lo(1b)
 	//la a1, _data
-	lui a1, %hi(_data)
-	addi a1, a1, %lo(_data)
+1:
+   auipc a1, %pcrel_hi(_data)
+	addi a1, a1, %pcrel_lo(1b)
 	//la a2, _edata
-	lui a2, %hi(_edata)
-	addi a2, a2, %lo(_edata)
+1:
+   auipc a2, %pcrel_hi(_edata)
+	addi a2, a2, %pcrel_lo(1b)
 	bgeu a1, a2, 2f
 1:
 	lw t0, 0(a0)
@@ -48,11 +53,13 @@ _start:
 
 	/* Clear bss section */
 	//la a0, __bss_start
-	lui a0, %hi(__bss_start)
-	addi a0, a0, %lo(__bss_start)
+1:
+   auipc a0, %pcrel_hi(__bss_start)
+	addi a0, a0, %pcrel_lo(1b)
 	//la a1, _end
-	lui a1, %hi(_end)
-	addi a1, a1, %lo(_end)
+1:
+   auipc a1, %pcrel_hi(_end)
+	addi a1, a1, %pcrel_lo(1b)
 	bgeu a0, a1, 2f
 1:
 	sw zero, 0(a0)
@@ -62,8 +69,9 @@ _start:
 
 	/* Call global constructors */
 	//la a0, __libc_fini_array
-	lui a0, %hi(__libc_fini_array)
-	addi a0, a0, %lo(__libc_fini_array)
+1:
+   auipc a0, %pcrel_hi(__libc_fini_array)
+	addi a0, a0, %pcrel_lo(1b)
 	call atexit
 	call __libc_init_array
 
