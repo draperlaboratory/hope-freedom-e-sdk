@@ -1,7 +1,7 @@
 BASE_DIR = $(abspath .)
 
 CC     = $(ISP_PREFIX)/bin/clang
-CFLAGS += -O0 -g3 -Wall -mabi=ilp32 -march=rv32i
+CFLAGS += -O0 -g3 -Wall -mabi=ilp32 -march=rv32im
 
 CFLAGS += -DALIGN_UART -DFPGA_GFE
 
