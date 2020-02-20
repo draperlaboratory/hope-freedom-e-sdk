@@ -30,9 +30,10 @@
 
 #define configTOTAL_HEAP_SIZE	    ( ( size_t ) ( 0x1000 ) )
 
-#define portBYTE_ALIGNMENT 4
-#define portBYTE_ALIGNMENT_MASK	( 0x0003 )
-#define portPOINTER_SIZE_TYPE uint32_t
+#define portPOINTER_SIZE_TYPE uintptr_t
+#define portBYTE_ALIGNMENT (__riscv_xlen / 8)
+#define portBYTE_ALIGNMENT_MASK	(portBYTE_ALIGNMENT - 1)
+
 typedef long BaseType_t;
 
 /* A few bytes might be lost to byte aligning the heap start address. */
