@@ -28,7 +28,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define configTOTAL_HEAP_SIZE	    ( ( size_t ) ( 0x1000 ) )
+#define configTOTAL_HEAP_SIZE	    ( ( size_t ) ( 0x2000 ) )
 
 #define portPOINTER_SIZE_TYPE uintptr_t
 #define portBYTE_ALIGNMENT (__riscv_xlen / 8)
