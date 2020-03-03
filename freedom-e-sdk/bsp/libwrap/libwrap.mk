@@ -27,6 +27,7 @@ LIBWRAP_SRCS := \
 	sys/sbrk.c \
 	sys/_exit.c \
 	sys/puts.c \
+	sys/printf.c \
 	misc/write_hex.c
 
 LIBWRAP_SRCS := $(foreach f,$(LIBWRAP_SRCS),$(LIBWRAP_DIR)/$(f))
@@ -35,7 +36,7 @@ LIBWRAP_OBJS := $(LIBWRAP_SRCS:.c=.o)
 LIBWRAP_SYMS := malloc free \
 	open lseek read write fstat stat close link unlink \
 	execve fork getpid kill wait \
-	isatty times sbrk _exit puts
+	isatty times sbrk _exit puts printf
 
 LIBWRAP := $(LIBWRAP_DIR)/libwrap.a
 
