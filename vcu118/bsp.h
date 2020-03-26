@@ -1,7 +1,7 @@
 #ifndef RISCV_P1_BSP_H
 #define RISCV_P1_BSP_H
 
-#define CPU_CLOCK_HZ 50000000
+#define CPU_CLOCK_HZ 100000000
 
 /**
  * UART defines
