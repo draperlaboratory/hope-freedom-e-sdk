@@ -156,6 +156,7 @@ void * __attribute__ ((noinline)) dover_tag(volatile uintptr_t *ptr, size_t byte
   while(count < words) {
     //printk("do_tag(%d) %d\n", count, p);
     *p = zero; // Tag the word
+    *((uint32_t*)p + 1) = zero;
     p++;
     count++;
   }
