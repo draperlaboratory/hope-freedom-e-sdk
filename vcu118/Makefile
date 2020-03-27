@@ -1,9 +1,21 @@
 BASE_DIR = $(abspath .)
 
-CC     = $(ISP_PREFIX)/bin/clang
-CFLAGS += -O0 -g3 -Wall -march=rv64g -mcmodel=medium
+CFLAGS := -DALIGN_UART -DFPGA_GFE
 
-CFLAGS += -DALIGN_UART -DFPGA_GFE
+ifneq ($(ARCH), rv64)
+RISCV_ARCH 			 ?= rv32ima
+RISCV_ABI        ?= ilp32
+CC 							 := $(ISP_PREFIX)/bin/clang
+else
+CC 							 := $(ISP_PREFIX)/bin/riscv64-unknown-elf-gcc
+
+RISCV_ARCH ?= rv64imafd
+RISCV_ABI ?= lp64d
+
+CFLAGS += -mcmodel=medany
+endif
+
+CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 
 LIB_TARGET = libvcu118.a
 
