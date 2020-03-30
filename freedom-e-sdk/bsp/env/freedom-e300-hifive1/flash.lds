@@ -4,8 +4,8 @@ ENTRY( _start )
 
 MEMORY
 {
-  flash (rxai!w) : ORIGIN = 0x20400000, LENGTH = 512M
-  ram (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 1M
+  flash (rxa!w) : ORIGIN = 0x20400000, LENGTH = 512M
+  ram (wxa!r) : ORIGIN = 0x80000000, LENGTH = 1M
 }
 
 PHDRS
@@ -155,7 +155,7 @@ SECTIONS
   .stack ORIGIN(ram) + LENGTH(ram) - __stack_size :
   {
     PROVIDE( _heap_end = . );
-    . = __stack_size;
+    . += __stack_size;
     PROVIDE( _sp = . );
   } >ram AT>ram :ram
 }
