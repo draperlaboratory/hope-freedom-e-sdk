@@ -159,6 +159,7 @@ void * __attribute__ ((noinline)) dover_tag(volatile uintptr_t *ptr, size_t byte
     p++;
     count++;
   }
+  zero = 0;
   //printk("do_tag %x\n", dover_remove_tag(p));
 
   return res;
@@ -185,6 +186,7 @@ void __attribute__ ((noinline)) dover_untag(volatile uintptr_t *ptr, size_t byte
     p++;
     count++;
   }
+  zero = 0;
 }
 
 /*-----------------------------------------------------------*/
