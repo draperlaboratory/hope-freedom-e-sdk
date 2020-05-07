@@ -92,16 +92,17 @@ ENTRY(boot)
  * Define the sections, and where they are mapped in memory 
  ****************************************************************************/
 SECTIONS {
-   .uncached : {
-      . = ALIGN(64);
+   .uncached : ALIGN(64) {
       *(.uncached);
 		*(.uncached.*);
    } > cmem
-	.text : {
-      . = ALIGN(8);
-	    *boot.o(.text);
+
+   .text.init : ALIGN(8) {
+	   *(.text.init);
+	} > imem
+	.text : ALIGN(0x1000) {
 		*(.text);
-		*(.text.*);
+      *(.text.*);
 	} > imem
 
 	.init : {
@@ -120,7 +121,7 @@ SECTIONS {
        __rodata_end = .;
 	} > dmem
 
-    .tohost ALIGN(0x1000) : { *(.tohost) } > dmem
+    .tohost : ALIGN(0x1000) { *(.tohost) } > dmem
 
 	.sbss : {
 	   __sbss_start = .;
@@ -136,8 +137,7 @@ SECTIONS {
         *(.sdata .sdata.* .gnu.linkonce.s.*)
      }	> dmem
 
-	.data : {
-	   . = ALIGN(8);
+	.data : ALIGN(8) {
 	   __data_start = .;
 	   *(.data)
 	   *(.data.*)
@@ -145,8 +145,7 @@ SECTIONS {
 	   __data_end = .;
 	} > dmem
 
-    .bss : {
-       . = ALIGN(8);
+    .bss : ALIGN(8) {
        __bss_start = .;
        *(.bss)
        *(.bss.*)
@@ -171,12 +170,17 @@ SECTIONS {
     } > dmem
 
    /* Heap grows upwards */
-    .heap : {
-       . = ALIGN(8);
+    .heap : ALIGN(8) {
        _heap = .;
        _heap_start = .;
        . += _HEAP_SIZE;
        _heap_end = .;
+    } > dmem
+
+    .vm : ALIGN(0x1000) {
+       _vm_start = .;
+       . += 256*(1 << 12);
+       _vm_end = .;
     } > dmem
 
     .dover_metadata : {
