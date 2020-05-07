@@ -71,6 +71,7 @@
 */
 
 /* Startup code */
+.section ".text.init","ax",@progbits
 .globl boot
 boot:
     li t6, 0x1800
@@ -137,6 +138,7 @@ write_stack_pattern:
 init_stack:
     /* set stack pointer */
     la	sp, _stack
+    csrw mscratch, sp
 
     j	_init
 
