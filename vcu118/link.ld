@@ -74,6 +74,7 @@ OUTPUT_ARCH( "riscv" )
 
 _STACK_SIZE = 0x4000;
 _HEAP_SIZE  = 0x8000;
+_VM_SIZE    = 0x100000;
 
 /*****************************************************************************
  * Define memory layout
@@ -179,7 +180,7 @@ SECTIONS {
 
     .vm : ALIGN(0x1000) {
        _vm_start = .;
-       . += 256*(1 << 12);
+       . += 0x100000;
        _vm_end = .;
     } > dmem
 
