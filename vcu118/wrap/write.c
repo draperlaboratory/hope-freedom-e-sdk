@@ -23,20 +23,3 @@ ssize_t __wrap_write(int fd, const void* ptr, size_t len)
     return retval;
 }
 weak_under_alias(write);
-
-ssize_t do_write(int fd, const void* ptr, size_t len)
-{
-    const uint8_t* current = (const uint8_t*)ptr;
-
-    if (isatty(fd)) {
-        for (size_t jj = 0; jj < len; jj++) {
-            uart0_txchar(current[jj]);
-            if (current[jj] == '\n') {
-              uart0_txchar('\r');
-            }
-        }
-        return len;
-    }
-
-    return -1;
-}
