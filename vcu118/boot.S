@@ -70,10 +70,17 @@
     1 tab == 4 spaces!
 */
 
-/* Startup code */
+#include "encoding.h"
+
 .section ".text.init","ax",@progbits
+
+/* Startup code */
 .globl boot
+.align 6
 boot:
+    la t0, machine_trap_table
+    ori t0, t0, 1
+    csrw mtvec, t0
     li t6, 0x1800
     csrw mstatus, t6
     j _mstart
@@ -137,8 +144,10 @@ write_stack_pattern:
 
 init_stack:
     /* set stack pointer */
-    la	sp, _stack
-    csrw mscratch, sp
+    la	t0, _stack
+    li  t1, RISCV_PGSIZE
+    sub sp, t0, t1
+    csrw mscratch, t0
 
     j	_init
 
