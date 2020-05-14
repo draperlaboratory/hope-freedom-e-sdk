@@ -1,10 +1,6 @@
 #ifndef RISCV_P1_BSP_H
 #define RISCV_P1_BSP_H
 
-#include <unistd.h>
-
-ssize_t do_write(int fd, const void* ptr, size_t len);
-
 #ifndef CPU_CLOCK_HZ
 #define CPU_CLOCK_HZ 100000000
 #endif
