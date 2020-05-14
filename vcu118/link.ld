@@ -72,7 +72,7 @@
 
 OUTPUT_ARCH( "riscv" )
 
-_STACK_SIZE = 0x4000;
+_STACK_SIZE = 0x6000;
 _HEAP_SIZE  = 0x8000;
 _VM_SIZE    = 0x100000;
 
@@ -104,6 +104,7 @@ SECTIONS {
 	.text : ALIGN(0x1000) {
 		*(.text);
       *(.text.*);
+      . = ALIGN(0x1000);
 	} > imem
 
 	.init : {
@@ -114,39 +115,43 @@ SECTIONS {
        KEEP (*(.fini))
     } > imem
 
-    .rodata : {
+    .rodata : ALIGN(0x1000) {
        __rodata_start = .;
        *(.rodata)
        *(.rodata.*)
        *(.gnu.linkonce.r.*)
        __rodata_end = .;
+       . = ALIGN(0x1000);
 	} > dmem
 
     .tohost : ALIGN(0x1000) { *(.tohost) } > dmem
 
-	.sbss : {
+	.sbss : ALIGN(0x1000) {
 	   __sbss_start = .;
 	   *(.sbss)
 	   *(.sbss.*)
 	   *(.gnu.linkonce.sb.*)
 	   __sbss_end = .;
+      . = ALIGN(0x1000);
 	} > dmem
 
-    .sdata : {
+    .sdata : ALIGN(0x1000) {
         _gp = . + 0x800;
         *(.srodata.cst16) *(.srodata.cst8) *(.srodata.cst4) *(.srodata.cst2) *(.srodata*)
         *(.sdata .sdata.* .gnu.linkonce.s.*)
+        . = ALIGN(0x1000);
      }	> dmem
 
-	.data : ALIGN(8) {
+	.data : ALIGN(0x1000) {
 	   __data_start = .;
 	   *(.data)
 	   *(.data.*)
 	   *(.gnu.linkonce.d.*)
 	   __data_end = .;
+      . = ALIGN(0x1000);
 	} > dmem
 
-    .bss : ALIGN(8) {
+    .bss : ALIGN(0x1000) {
        __bss_start = .;
        *(.bss)
        *(.bss.*)
@@ -154,13 +159,14 @@ SECTIONS {
        *(COMMON)
        . = ALIGN(8);
        __bss_end = .;
+       . = ALIGN(0x1000);
     } > dmem
 
    /* Generate Stack and Heap definitions
     * Stack is used by the ISR and the main() for initialization
     * Stack grows downwards
     */
-   .stack : {
+   .stack : ALIGN(0x1000) {
        _stack_end = .;
        . += _STACK_SIZE;
        . = ALIGN(8);
@@ -168,14 +174,16 @@ SECTIONS {
        __stack = _stack;
        . = ALIGN(64);
        __freertos_irq_stack_top = .;
+       . = ALIGN(0x1000);
     } > dmem
 
    /* Heap grows upwards */
-    .heap : ALIGN(8) {
+    .heap : ALIGN(0x1000) {
        _heap = .;
        _heap_start = .;
        . += _HEAP_SIZE;
        _heap_end = .;
+       . = ALIGN(0x1000);
     } > dmem
 
     .vm : ALIGN(0x1000) {
