@@ -1,6 +1,5 @@
 #include <unistd.h>
 #include <stdint.h>
-#include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include "uart.h"
@@ -8,6 +7,12 @@
 
 int __wrap_puts(const char *s)
 {
-  return write(STDOUT_FILENO, s, strlen(s));
+  char* str = s;
+  int len = 0;
+  while (*str != '\0') {
+    len++;
+    str++;
+  }
+  return write(STDOUT_FILENO, s, len);
 }
 weak_under_alias(puts);
