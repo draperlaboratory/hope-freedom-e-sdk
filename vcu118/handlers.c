@@ -1,15 +1,8 @@
 #include <stdint.h>
 #include <unistd.h>
 #include "encoding.h"
-
-typedef struct
-{
-  uintptr_t gpr[32];
-  uintptr_t sr;
-  uintptr_t epc;
-  uintptr_t badvaddr;
-  uintptr_t cause;
-} trapframe_t;
+#include "trap.h"
+#include "uart.h"
 
 ssize_t do_write(int fd, const void* ptr, size_t len)
 {
