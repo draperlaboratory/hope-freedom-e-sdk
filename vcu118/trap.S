@@ -1,3 +1,5 @@
+#include "encoding.h"
+
 #if __riscv_xlen == 64
 # define STORE    sd
 # define LOAD     ld
@@ -125,3 +127,17 @@ bad_trap:
   la t4, tohost
   sd t3, 0(t4)
 1:j 1b
+
+.section ".text","ax",@progbits
+
+  .global __wrap_exit
+  .align 2
+__wrap_exit:
+  # a0 has the exit code
+  li a1,0
+  li a2,0
+  li a3,0
+  li a4,0
+  li a5,0
+  li a7,SYSCALL_EXIT
+  ecall
