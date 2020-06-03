@@ -4,6 +4,22 @@
 #include "trap.h"
 #include "uart.h"
 
+extern volatile uint64_t tohost;
+extern volatile uint64_t fromhost;
+
+static void do_tohost(uint64_t tohost_value)
+{
+  while (tohost)
+    fromhost = 0;
+  tohost = tohost_value;
+}
+
+void do_exit(int code)
+{
+  do_tohost((code << 1) | 1);
+  while (1);
+}
+
 ssize_t do_write(int fd, const void* ptr, size_t len)
 {
     const uint8_t* current = (const uint8_t*)ptr;
@@ -26,6 +42,8 @@ uintptr_t handle_ecall(uintptr_t args[6], int n)
   switch (n) {
   case SYSCALL_WRITE:
     return (uintptr_t)(do_write(args[0], (const void*)args[1], (size_t)args[2]));
+  case SYSCALL_EXIT:
+    do_exit(args[0]);
   }
 }
 
