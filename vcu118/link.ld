@@ -98,10 +98,9 @@ SECTIONS {
 		*(.uncached.*);
    } > cmem
 
-   .text.init : ALIGN(8) {
+   .text : ALIGN(8) {
 	   *(.text.init);
-	} > imem
-	.text : ALIGN(0x1000) {
+      . = ALIGN(0x1000);
 		*(.text);
       *(.text.*);
       . = ALIGN(0x1000);
