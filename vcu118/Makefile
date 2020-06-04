@@ -32,6 +32,7 @@ CFLAGS += -I$(ISP_PREFIX)/include \
 C_SRCS = init.c \
          handlers.c \
 		 uart.c \
+		 vm.c \
 		 wrap/isatty.c \
 		 wrap/malloc.c \
 		 wrap/printf.c \
