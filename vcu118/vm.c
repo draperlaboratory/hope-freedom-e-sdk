@@ -17,15 +17,11 @@ typedef unsigned long pte_t;
 #define PTES_PER_PT (1UL << RISCV_PGLEVEL_BITS)
 #define MEGAPAGE_SIZE (PTES_PER_PT * RISCV_PGSIZE)
 
+void supervisor_pop_tf(trapframe_t*);
+void supervisor_trap_entry(void);
+
 volatile uint64_t tohost;
 volatile uint64_t fromhost;
-
-static void do_tohost(uint64_t tohost_value)
-{
-  while (tohost)
-    fromhost = 0;
-  tohost = tohost_value;
-}
 
 #define pa2kva(pa) ((void*)(pa) - DRAM_BASE - MEGAPAGE_SIZE)
 #define uva2kva(pa) ((void*)(pa) - MEGAPAGE_SIZE)
@@ -137,32 +133,30 @@ void handle_fault(uintptr_t addr, uintptr_t cause)
   asm volatile("fence.i");
 }
 
+static uintptr_t handle_ecall(uintptr_t args[6], int n)
+{
+  uintptr_t sstatus;
+  char buf[args[2]];
+  switch (n) {
+   case SYSCALL_WRITE:
+    // Write data is in user memory, so we have to give S-mode R/W access to it in sstatus
+    sstatus = set_csr(sstatus, SSTATUS_SUM);
+    strncpy(buf, (const char*)args[1], args[2]);
+    write_csr(sstatus, sstatus);
+    return do_write(args[0], buf, args[2]);
+   case SYSCALL_EXIT:
+    do_exit(args[0]);
+   default:
+    for (long i = 1; i < MAX_TEST_PAGES; i++)
+      evict(i*RISCV_PGSIZE);
+    do_exit(args[0]);
+  }
+}
+
 void handle_supervisor_trap(trapframe_t* tf)
 {
-  if (tf->cause == CAUSE_USER_ECALL)
-  {
-    switch (tf->gpr[17]) {
-    case SYSCALL_WRITE:
-      { // Open a new scope here to allow declaring new variables
-        // Write data is in user memory, so we have to give S-mode R/W access to it in sstatus
-        uintptr_t sstatus = set_csr(sstatus, SSTATUS_SUM);
-        char buf[(size_t)tf->gpr[12] + 1];
-        strcpy(buf, (const char*)tf->gpr[11]);
-        write_csr(sstatus, sstatus);
-        tf->gpr[10] = (uintptr_t)(do_write((int)tf->gpr[10], buf, (size_t)tf->gpr[12]));
-        tf->epc += 4; // tf->epc points to ecall
-      }
-      break;
-    case SYSCALL_EXIT:
-      do_exit(tf->gpr[10]);
-    default:
-      for (long i = 1; i < MAX_TEST_PAGES; i++)
-        evict(i*RISCV_PGSIZE);
-      do_exit(tf->gpr[10]);
-    }
-  }
-  else if (tf->cause == CAUSE_ILLEGAL_INSTRUCTION)
-  {
+  switch (tf->cause) {
+   case CAUSE_ILLEGAL_INSTRUCTION:
     assert(tf->epc % 4 == 0);
 
     int* fssr;
@@ -173,11 +167,18 @@ void handle_supervisor_trap(trapframe_t* tf)
     else
       assert(!"illegal instruction");
     tf->epc += 4;
-  }
-  else if (tf->cause == CAUSE_FETCH_PAGE_FAULT || tf->cause == CAUSE_LOAD_PAGE_FAULT || tf->cause == CAUSE_STORE_PAGE_FAULT)
+    break;
+   case CAUSE_USER_ECALL:
+    tf->gpr[10] = handle_ecall(&tf->gpr[10], tf->gpr[17]);
+    tf->epc += 4; // tf->epc points to ecall
+    break;
+   case CAUSE_FETCH_PAGE_FAULT: case CAUSE_LOAD_PAGE_FAULT: case CAUSE_STORE_PAGE_FAULT:
     handle_fault(tf->badvaddr, tf->cause);
-  else
+    // Go back to the faulting epc
+    break;
+   default:
     assert(!"unexpected exception");
+  }
 
   supervisor_pop_tf(tf);
 }
