@@ -3,6 +3,14 @@
 
 extern int main(void);
 
+static void start(void)
+{
+  int result = main();
+  // isp_run_app should exit upon seeing this message
+  printf("Program exited with code: %d\n", result);
+  exit(result);
+}
+
 void _init(void)
 {
   int result;
@@ -18,10 +26,9 @@ void _init(void)
     asm volatile("csrw mstatus, %0; csrw frm, 0" :: "r"(mstatus));
   }
 
-  result = main();
-
-  // isp_run_app should exit upon seeing this message
-  printf("Program exited with code: %d\n", result);
-
-  for(;;);
+#if USE_VM == 1
+  vm_boot(start);
+#else
+  start();
+#endif
 }

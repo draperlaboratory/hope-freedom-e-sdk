@@ -17,7 +17,8 @@ CFLAGS += -mcmodel=medany
 CFLAGS += -DCPU_CLOCK_HZ=100000000
 endif
 
-CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
+USE_VM ?= 1
+CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI) -DUSE_VM=$(USE_VM)
 
 LIB_TARGET = libvcu118.a
 
