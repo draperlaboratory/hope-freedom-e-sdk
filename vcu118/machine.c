@@ -4,6 +4,17 @@
 
 void machine_pop_tf(trapframe_t*);
 
+void bad_trap()
+{
+    uintptr_t mcause, mepc, mtval;
+    asm volatile("csrr %0, mcause;"
+                 "csrr %1, mepc;"
+                 "csrr %2, mtval;"
+                 : "=r"(mcause), "=r"(mepc), "=r"(mtval));
+    printf("Bad trap %x at address %p: %x", mcause, mepc, mtval);
+    do_exit(mcause);
+}
+
 static uintptr_t handle_ecall(uintptr_t args[6], int n)
 {
   switch (n) {
@@ -11,6 +22,9 @@ static uintptr_t handle_ecall(uintptr_t args[6], int n)
     return (uintptr_t)(do_write(args[0], (const void*)args[1], args[2]));
    case SYSCALL_EXIT:
     do_exit(args[0]);
+   default:
+    asm volatile("csrw mtval, %0" :: "r"(n));
+    bad_trap();
   }
 }
 

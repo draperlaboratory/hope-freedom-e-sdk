@@ -100,6 +100,7 @@ SECTIONS {
 
    .text : ALIGN(8) {
 	   *(.text.init);
+      machine.o;
       . = ALIGN(0x1000);
 		*(.text);
       *(.text.*);

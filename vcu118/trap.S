@@ -13,8 +13,8 @@
 .section ".text.init","ax",@progbits
 
 /* Machine mode trap */
-.globl machine_trap_table
-.align 8
+  .globl machine_trap_table
+  .align 8
 machine_trap_table:
   j machine_trap_entry
   j bad_trap
@@ -116,17 +116,6 @@ machine_trap_entry:
 
   move  a0, sp
   j handle_machine_trap
-
-  .globl bad_trap
-bad_trap:
-  csrr t0, mcause
-  csrr t1, mepc
-  csrr t2, mtval
-  slli t3, t0, 1
-  ori t3, t3, 1
-  la t4, tohost
-  sd t3, 0(t4)
-1:j 1b
 
 .section ".text","ax",@progbits
 

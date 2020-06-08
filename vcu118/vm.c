@@ -145,11 +145,12 @@ static uintptr_t handle_ecall(uintptr_t args[6], int n)
     write_csr(sstatus, sstatus);
     return do_write(args[0], buf, args[2]);
    case SYSCALL_EXIT:
-    do_exit(args[0]);
-   default:
     for (long i = 1; i < MAX_TEST_PAGES; i++)
       evict(i*RISCV_PGSIZE);
     do_exit(args[0]);
+   default:
+    // forward unknown system calls to M-mode, which will result in a bad trap
+    asm volatile("ecall");
   }
 }
 
