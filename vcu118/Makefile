@@ -30,30 +30,10 @@ CFLAGS += -I$(ISP_PREFIX)/include \
           -ffunction-sections \
           -fno-builtin-printf
 
-C_SRCS = init.c \
-         handlers.c \
-		 uart.c \
-		 vm.c \
-		 wrap/isatty.c \
-		 wrap/malloc.c \
-		 wrap/printf.c \
-		 wrap/puts.c \
-		 wrap/read.c \
-		 wrap/write.c \
-		 xilinx/common/xbasic_types.c \
-		 xilinx/common/xil_io.c \
-		 xilinx/common/xil_assert.c \
-		 xilinx/uartns550/xuartns550.c \
-		 xilinx/uartns550/xuartns550_g.c \
-		 xilinx/uartns550/xuartns550_format.c \
-		 xilinx/uartns550/xuartns550_intr.c \
-		 xilinx/uartns550/xuartns550_l.c \
-		 xilinx/uartns550/xuartns550_options.c \
-		 xilinx/uartns550/xuartns550_selftest.c \
-		 xilinx/uartns550/xuartns550_sinit.c \
-		 xilinx/uartns550/xuartns550_stats.c
+C_SRCS = $(wildcard *.c) $(wildcard wrap/*.c) \
+		 $(wildcard xilinx/common/*.c) $(wildcard xilinx/uartns550/*.c)
 
-ASM_SRCS = boot.S trap.S
+ASM_SRCS = $(wildcard *.S)
 
 OBJS   = $(patsubst %.c,%.o,$(C_SRCS))
 OBJS   += $(patsubst %.S,%.o,$(ASM_SRCS))

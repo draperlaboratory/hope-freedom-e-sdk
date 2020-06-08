@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "bsp.h"
 #include "encoding.h"
-#include "handlers.h"
+#include "syscall.h"
 #include "trap.h"
 
 #define MAX_TEST_PAGES 255

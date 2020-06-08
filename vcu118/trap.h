@@ -1,6 +1,8 @@
 #ifndef __TRAP_H__
 #define __TRAP_H__
 
+#include <stdint.h>
+
 typedef struct
 {
   uintptr_t gpr[32];
