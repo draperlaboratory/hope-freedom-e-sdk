@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "encoding.h"
 #include "syscall.h"
 #include "trap.h"
@@ -10,12 +11,16 @@ void bad_trap()
     asm volatile("csrr %0, mcause;"
                  "csrr %1, mepc;"
                  "csrr %2, mtval;"
-                 : "=r"(mcause), "=r"(mepc), "=r"(mtval));
-    printf("Bad trap %x at address %p: %x", mcause, mepc, mtval);
+                 : "=r" (mcause), "=r" (mepc), "=r" (mtval));
+
+    // Can't use printf here because can't use ecall in an M-mode trap handler
+    char buf[64];
+    snprintf(buf, sizeof(buf), "Bad trap %x at address %p: %x\n", mcause, mepc, mtval);
+    do_write(1, buf, strlen(buf));
     do_exit(mcause);
 }
 
-static uintptr_t handle_ecall(uintptr_t args[6], int n)
+static uintptr_t handle_ecall(uintptr_t args[7], int n)
 {
   switch (n) {
    case SYSCALL_WRITE:

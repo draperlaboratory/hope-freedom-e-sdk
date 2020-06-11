@@ -72,6 +72,8 @@
 
 #include "encoding.h"
 
+#define SIZEOF_TRAPFRAME_T ((__riscv_xlen/8)*36)
+
 .section ".text.init","ax",@progbits
 
 /* Startup code */
@@ -147,6 +149,8 @@ init_stack:
     la	t0, _stack
     li  t1, RISCV_PGSIZE
     sub sp, t0, t1
+    /* make room for the trap frame at the bottom of the M-mode stack */
+    addi t0, t0, -SIZEOF_TRAPFRAME_T
     csrw mscratch, t0
 
     j	_init

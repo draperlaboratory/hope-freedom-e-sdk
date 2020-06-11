@@ -133,7 +133,7 @@ void handle_fault(uintptr_t addr, uintptr_t cause)
   asm volatile("fence.i");
 }
 
-static uintptr_t handle_ecall(uintptr_t args[6], int n)
+static uintptr_t handle_ecall(uintptr_t args[7], int n)
 {
   uintptr_t sstatus;
   char buf[args[2]];
@@ -274,7 +274,7 @@ void vm_boot(uintptr_t test_addr)
 
   trapframe_t tf;
   memset(&tf, 0, sizeof(tf));
-  tf.gpr[2] = (read_csr(mscratch) - 2*RISCV_PGSIZE) - DRAM_BASE;
+  tf.gpr[2] = (read_csr(mscratch) - 2*RISCV_PGSIZE + sizeof(trapframe_t)) - DRAM_BASE;
   tf.epc = test_addr - DRAM_BASE;
   supervisor_pop_tf(&tf);
 }
