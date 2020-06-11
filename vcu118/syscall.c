@@ -4,6 +4,13 @@
 #include "trap.h"
 #include "uart.h"
 
+uintptr_t syscall(uintptr_t arg0, uintptr_t arg1, uintptr_t arg2, uintptr_t arg3, uintptr_t arg4, uintptr_t arg5, uintptr_t arg6, int n)
+{
+    uintptr_t retval;
+    asm volatile("ecall; mv %0, a0" : "=r" (retval));
+    return retval;
+}
+
 extern volatile uint64_t tohost;
 extern volatile uint64_t fromhost;
 

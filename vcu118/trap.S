@@ -208,15 +208,3 @@ supervisor_trap_entry:
 
   move  a0, sp
   j handle_supervisor_trap
-
-  .global __wrap_exit
-  .align 2
-__wrap_exit:
-  # a0 has the exit code
-  li a1,0
-  li a2,0
-  li a3,0
-  li a4,0
-  li a5,0
-  li a7,SYSCALL_EXIT
-  ecall
