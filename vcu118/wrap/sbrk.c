@@ -4,7 +4,7 @@
 
 extern uintptr_t _heap_end;
 static void* program_break = &_heap_end;
-static uint32_t sbrk_zero = 0;
+static const volatile uintptr_t sbrk_zero = 0;
 
 uint32_t* const AP_MB0 = (uint32_t*)0x10090U;
 uint32_t* const AP_MB1 = (uint32_t*)0x10094U;
