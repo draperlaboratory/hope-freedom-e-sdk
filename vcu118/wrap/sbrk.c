@@ -2,6 +2,8 @@
 
 #include "weak_under_alias.h"
 
+#define SBRK_REQ 1
+
 extern uintptr_t _heap_end;
 static void* program_break = &_heap_end;
 static const volatile uintptr_t sbrk_zero = 0;
@@ -27,7 +29,7 @@ void* __wrap_sbrk(intptr_t increment)
 
   if (increment > 0) {
     // Interrupt the PEX to tell it the AP might want to allocate a new memory region
-    AP_MB[0] = 1;
+    AP_MB[0] = SBRK_REQ;
     uint32_t pex = PEX_MB[0];
     *MB_IRQ = 1;
     while (PEX_MB[0] == pex); // Wait for the PEX to finish processing the request
