@@ -6,15 +6,15 @@ extern uintptr_t _heap_end;
 static void* program_break = &_heap_end;
 static const volatile uintptr_t sbrk_zero = 0;
 
-uint32_t* const AP_MB = (uint32_t*)0x10090U;
+const volatile uint32_t* const PEX_MB = (uint32_t*)0x10080;
+volatile uint32_t* const AP_MB = (uint32_t*)0x10090;
+volatile uint32_t* const MB_IRQ = (uint32_t*)0x100a0;
 
 void* __wrap_sbrk(intptr_t increment)
 {
   // If increment is zero, just return the fake program break
   if (increment == 0)
     return program_break;
-
-  AP_MB[0] = 1;
 
   // Ensure the new program break always aligns to pointer size
   increment = (increment + sizeof(uintptr_t) - 1)/sizeof(uintptr_t)*sizeof(uintptr_t);
@@ -24,6 +24,14 @@ void* __wrap_sbrk(intptr_t increment)
   void* temp = program_break;
   program_break += increment;
   AP_MB[2] = (uint32_t)program_break;
+
+  if (increment > 0) {
+    // Interrupt the PEX to tell it the AP might want to allocate a new memory region
+    AP_MB[0] = 1;
+    uint32_t pex = PEX_MB[0];
+    *MB_IRQ = 1;
+    while (PEX_MB[0] == pex); // Wait for the PEX to finish processing the request
+  }
 
   // Update tags for newly-allocated or deallocated memory
   uintptr_t size = increment > 0 ? increment : -increment;
