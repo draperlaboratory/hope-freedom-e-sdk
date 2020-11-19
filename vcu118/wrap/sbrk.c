@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include "bsp.h"
 
 #include "weak_under_alias.h"
 
@@ -7,10 +8,6 @@
 extern uintptr_t _heap_end;
 static void* program_break = &_heap_end;
 static const volatile uintptr_t sbrk_zero = 0;
-
-const volatile uint32_t* const PEX_MB = (uint32_t*)0x10080;
-volatile uint32_t* const AP_MB = (uint32_t*)0x10090;
-volatile uint32_t* const MB_IRQ = (uint32_t*)0x100a0;
 
 void* __wrap_sbrk(intptr_t increment)
 {

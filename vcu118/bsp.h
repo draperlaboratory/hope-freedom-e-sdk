@@ -24,4 +24,8 @@
 #define XPAR_UARTNS550_1_BASEADDR (0x62340000ULL)
 #define XPAR_UARTNS550_1_CLOCK_HZ CPU_CLOCK_HZ
 
+static const volatile uint32_t* const PEX_MB = (uint32_t*)0x10080;
+static volatile uint32_t* const AP_MB = (uint32_t*)0x10090;
+static volatile uint32_t* const MB_IRQ = (uint32_t*)0x100a0;
+
 #endif /* RISCV_P1_BSP_H */
