@@ -46,6 +46,8 @@ SECTIONS
     *(.rdata)
     *(.rodata .rodata.*)
     *(.gnu.linkonce.r.*)
+    *(.eh_frame_hdr)
+    *(.eh_frame)
   } >flash AT>flash :flash
 
   . = ALIGN(4);
