@@ -5,5 +5,6 @@ install:
 	cp -r freedom-e-sdk/bsp/* $(ISP_PREFIX)/hifive_bsp/
 	mkdir -p $(ISP_PREFIX)/vcu118_bsp
 	cp -r vcu118/* $(ISP_PREFIX)/vcu118_bsp/
-
+	mkdir -p $(ISP_PREFIX)/iveia_bsp
+	cp -r iveia/* $(ISP_PREFIX)/iveia_bsp/
 clean:
