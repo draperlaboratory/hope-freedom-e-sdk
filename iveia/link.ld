@@ -79,38 +79,37 @@ _HEAP_SIZE  = 0x8000;
  * Define memory layout
  ****************************************************************************/
 MEMORY {
-   cmem : ORIGIN = 0x20000000, LENGTH = 0x00800000
 	imem : ORIGIN = 0x10000000, LENGTH = 0x00080000
 	dmem : ORIGIN = 0x10080000, LENGTH = 0x00800000
+	cmem : ORIGIN = 0x20000000, LENGTH = 0x00800000
 }
 
 /* Specify the default entry point to the program */
-
 ENTRY(boot)
 
 /*****************************************************************************
  * Define the sections, and where they are mapped in memory 
  ****************************************************************************/
 SECTIONS {
-   .uncached : {
-      . = ALIGN(64);
-      *(.uncached);
+	.uncached : {
+		. = ALIGN(64);
+		*(.uncached);
 		*(.uncached.*);
-   } > cmem
+	} > cmem
 	.text : {
-      . = ALIGN(8);
-	    *boot.o(.text);
+	       . = ALIGN(8);
+		libiveia.a:boot.o(.text);
 		*(.text);
 		*(.text.*);
 	} > imem
 
 	.init : {
-	   KEEP (*(.init))
+		KEEP (*(.init))
 	} > imem
 
-    .fini : {
-       KEEP (*(.fini))
-    } > imem
+	.fini : {
+		KEEP (*(.fini))
+	} > imem
 
     .rodata : {
        __rodata_start = .;
