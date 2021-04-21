@@ -14,7 +14,7 @@ RISCV_ABI ?= lp64d
 
 CFLAGS += --target=riscv64-unknown-elf
 CFLAGS += -mcmodel=medany
-CFLAGS += -DCPU_CLOCK_HZ=100000000
+CFLAGS += -DCPU_CLOCK_HZ=50000000
 endif
 
 CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
