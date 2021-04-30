@@ -73,7 +73,8 @@
 /* Startup code */
 .globl boot
 boot:
-    li t6, 0x1800
+	// enable MSTATUS_PRV1 and MSTATUS_MIE
+    li t6, 0x1888
     csrw mstatus, t6
     j _mstart
 
