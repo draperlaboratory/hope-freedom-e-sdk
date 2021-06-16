@@ -53,108 +53,48 @@ static XUartNs550 UartNs550_1;
 struct UartDriver Uart1;
 #endif
 
+#if BSP_USE_UART2
+static XUartNs550 UartNs550_2;
+struct UartDriver Uart2;
+#endif
+
 /*****************************************************************************/
 /* Peripheral specific definitions */
 #if BSP_USE_UART0
 /**
  * Initialize UART 0 peripheral
  */
-void uart0_init(void)
-{
-    uart_init(&Uart0, XPAR_UARTNS550_0_DEVICE_ID, 0);
-}
+UART_INIT(0)
+UART_RXREADY(0)
+UART_RXCHAR(0)
+UART_TXCHAR(0)
+UART_TXBUFFER(0)
+UART_RXBUFFER(0)
 
-/**
- * Return 1 if UART0 has at leas 1 byte in the RX FIFO
- */
-bool uart0_rxready(void)
-{
-    return uart_rxready(&Uart0);
-}
-
-/**
- * Receive a single byte. Polling mode, waits until finished
- */
-char uart0_rxchar(void)
-{
-    return (char)uart_rxchar(&Uart0);
-}
-
-/**
- * Transmit a buffer. Waits indefinitely for a UART TX mutex,
- * returns number of transferred bytes or -1 in case of an error.
- * Synchronous API.
- */
-int uart0_txbuffer(char *ptr, int len)
-{
-    return uart_txbuffer(&Uart0, (uint8_t *)ptr, len);
-}
-
-/**
- * Transmit a single byte. Polling mode, waits until finished
- */
-char uart0_txchar(char c)
-{
-    return (char)uart_txchar(&Uart0, (uint8_t)c);
-}
-
-int uart0_rxbuffer(char *ptr, int len)
-{
-    return uart_rxbuffer(&Uart0, (uint8_t *)ptr, len);
-}
 #endif /* BSP_USE_UART0 */
 
 #if BSP_USE_UART1
-/**
- * Initialize UART 1 peripheral
- */
-void uart1_init(void)
-{
-    uart_init(&Uart1, XPAR_UARTNS550_1_DEVICE_ID, 0);
-}
 
-/**
- * Return 1 if UART1 has at leas 1 byte in the RX FIFO
- */
-bool uart1_rxready(void)
-{
-    return uart_rxready(&Uart1);
-}
+UART_INIT(1)
+UART_RXREADY(1)
+UART_RXCHAR(1)
+UART_TXCHAR(1)
+UART_TXBUFFER(1)
+UART_RXBUFFER(1)
 
-/**
- * Receive a single byte.
- */
-char uart1_rxchar(void)
-{
-    return (char)uart_rxchar(&Uart1);
-}
-
-/**
- * Transmit a buffer. Waits indefinitely for a UART TX mutex,
- * returns number of transferred bytes or -1 in case of an error.
- * Synchronous API.
- */
-int uart1_txbuffer(char *ptr, int len)
-{
-    return uart_txbuffer(&Uart1, (uint8_t *)ptr, len);
-}
-
-/**
- * Transmit a single byte.
- */
-char uart1_txchar(char c)
-{
-    return (char)uart_txchar(&Uart1, (uint8_t)c);
-}
-
-/**
- * Transmit buffer.
- */
-int uart1_rxbuffer(char *ptr, int len)
-{
-    return uart_rxbuffer(&Uart1, (uint8_t *)ptr, len);
-}
 #endif /* BSP_USE_UART1 */
+
+#if BSP_USE_UART2
+
+UART_INIT(2)
+UART_RXREADY(2)
+UART_RXCHAR(2)
+UART_TXCHAR(2)
+UART_TXBUFFER(2)
+UART_RXBUFFER(2)
+
+#endif /* BSP_USE_UART2 */
+
 
 /*****************************************************************************/
 /* Driver specific defintions */
@@ -179,6 +119,11 @@ static void uart_init(struct UartDriver *Uart, uint8_t device_id, uint8_t plic_s
 #if BSP_USE_UART1
     case 1:
         Uart->Device = UartNs550_1;
+        break;
+#endif
+#if BSP_USE_UART2
+    case 2:
+        Uart->Device = UartNs550_2;
         break;
 #endif
     default:
