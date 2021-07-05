@@ -37,6 +37,7 @@ C_SRCS = init.c \
 				 wrap/puts.c \
 				 wrap/read.c \
 				 wrap/write.c \
+				 wrap/sbrk.c \
 			   xilinx/common/xbasic_types.c \
 				 xilinx/common/xil_io.c \
 				 xilinx/common/xil_assert.c \
