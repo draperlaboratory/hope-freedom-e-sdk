@@ -22,6 +22,7 @@ endif
 CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 
 LIB_TARGET = libiveia.a
+LIB_UART  = libuart-$(ARCH).a
 
 CFLAGS += -I$(ISP_PREFIX)/include \
           -I$(BASE_DIR) \
@@ -34,13 +35,11 @@ CFLAGS += -I$(ISP_PREFIX)/include \
 C_SRCS = init.c \
 				 uart.c \
 				 wrap/isatty.c \
-				 wrap/malloc.c \
 				 wrap/printf.c \
 				 wrap/puts.c \
 				 wrap/read.c \
 				 wrap/write.c \
-				 wrap/sbrk.c \
-			   xilinx/common/xbasic_types.c \
+			         xilinx/common/xbasic_types.c \
 				 xilinx/common/xil_io.c \
 				 xilinx/common/xil_assert.c \
 				 xilinx/uartns550/xuartns550.c \
@@ -53,13 +52,18 @@ C_SRCS = init.c \
 				 xilinx/uartns550/xuartns550_sinit.c \
 				 xilinx/uartns550/xuartns550_stats.c
 
+C_SRCS_SYS = wrap/malloc.c \
+			 wrap/sbrk.c
+
+
 ASM_SRCS = boot.S
 
-OBJS   = $(patsubst %.c,%.o,$(C_SRCS))
-OBJS   += $(patsubst %.S,%.o,$(ASM_SRCS))
+OBJS = $(patsubst %.c,%.o,$(C_SRCS))
+ASM_OBJS = $(patsubst %.S,%.o,$(ASM_SRCS))
+SYS_OBJS = $(patsubst %.c,%.o,$(C_SRCS_SYS))
 
 all: $(LIB_TARGET)
-.PHONY: all clean
+.PHONY: all clean $(LIB_UART)
 .PRECIOUS: $(BUILD_DIR)/ $(BUILD_DIR)%/
 .SECONDEXPANSION:
 
@@ -69,8 +73,11 @@ all: $(LIB_TARGET)
 %.o: %.S
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LIB_TARGET): $(OBJS)
+$(LIB_TARGET): $(OBJS) $(ASM_OBJS) $(SYS_OBJS)
+	ar rcs $@ $(OBJS) $(ASM_OBJS) $(SYS_OBJS)
+
+$(LIB_UART): $(OBJS)
 	ar rcs $@ $(OBJS)
 
 clean:
-	rm -rf $(OBJS) $(LIB_TARGET)
+	rm -rf $(OBJS) $(ASM_OBJS) $(SYS_OBJS) $(LIB_TARGET)
