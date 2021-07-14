@@ -1,0 +1,13 @@
+LIBS := libiveia.a
+LIBS += libuart-rv32.a
+LIBS += libuart-rv64.a
+
+.PHONY: all
+
+all:
+	make clean && make all
+	ARCH=rv32 make -B libuart-rv32.a
+	ARCH=rv64 make -B libuart-rv64.a
+
+clean:
+	make clean && /bin/rm -f $(LIBS)
