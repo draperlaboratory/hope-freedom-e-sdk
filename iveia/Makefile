@@ -24,7 +24,7 @@ CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 LIB_TARGET = libiveia.a
 LIB_UART  = libuart-$(ARCH).a
 
-CFLAGS += -I$(ISP_PREFIX)/include \
+CFLAGS += -I$(ISP_PREFIX)/include -I$(ISP_PREFIX)/soc_cfg \
           -I$(BASE_DIR) \
           -I$(BASE_DIR)/wrap \
           -I$(BASE_DIR)/xilinx/common \
