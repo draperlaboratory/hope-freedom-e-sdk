@@ -15,7 +15,7 @@ void bad_trap(){
   asm volatile("csrr %0, mcause" : "=r"(mcause));
   asm volatile("csrr %0, mtval" : "=r"(mtval));
   asm volatile("csrr %0, mepc" : "=r"(mepc));
-  printf("\n FAILURE: \n mcause=0x%lx\n, mepc=0x%lx \n, mtval=0x%lx \n", mcause, mepc, mtval);
+  printf("\n BAD TRAP: \n mcause=0x%lx\n, mepc=0x%lx \n, mtval=0x%lx \n", mcause, mepc, mtval);
 }
 
 void _init(void)
