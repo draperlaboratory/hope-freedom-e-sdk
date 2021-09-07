@@ -23,7 +23,7 @@ CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 
 LIB_TARGET = libvcu118.a
 
-CFLAGS += -I$(ISP_PREFIX)/include -I$(ISP_PREFIX)/soc_cfg \
+CFLAGS += -I$(ISP_PREFIX)/include -I$(ISP_PREFIX)/vcu118_bsp \
           -I$(BASE_DIR) \
           -I$(BASE_DIR)/wrap \
           -I$(BASE_DIR)/xilinx/common \
