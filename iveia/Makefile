@@ -3,6 +3,9 @@ BASE_DIR = $(abspath .)
 CFLAGS := -DALIGN_UART -DFPGA_GFE
 
 CC 							 := $(ISP_PREFIX)/bin/clang
+
+ARCH ?= rv64
+
 ifneq ($(ARCH), rv64)
 RISCV_ARCH 			 ?= rv32ima
 RISCV_ABI        ?= ilp32
@@ -21,7 +24,7 @@ CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 
 LIB_TARGET = libiveia.a
 
-CFLAGS += -I$(ISP_PREFIX)/include \
+CFLAGS += -I$(ISP_PREFIX)/include -I$(ISP_PREFIX)/iveia_bsp \
           -I$(BASE_DIR) \
           -I$(BASE_DIR)/wrap \
           -I$(BASE_DIR)/xilinx/common \
