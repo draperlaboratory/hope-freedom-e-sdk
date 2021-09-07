@@ -8,6 +8,7 @@ RISCV_ARCH 			 ?= rv32ima
 RISCV_ABI        ?= ilp32
 CFLAGS += --target=riscv32-unknown-elf
 CFLAGS += -DCPU_CLOCK_HZ=50000000
+CFLAGS += -DRV32
 else
 RISCV_ARCH ?= rv64imafd
 RISCV_ABI ?= lp64d
@@ -15,6 +16,7 @@ RISCV_ABI ?= lp64d
 CFLAGS += --target=riscv64-unknown-elf
 CFLAGS += -mcmodel=medany
 CFLAGS += -DCPU_CLOCK_HZ=100000000
+CFLAGS += -DRV64
 endif
 
 CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
