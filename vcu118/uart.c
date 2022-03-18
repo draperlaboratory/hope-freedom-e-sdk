@@ -169,16 +169,23 @@ static bool uart_rxready(struct UartDriver *Uart)
  */
 static void uart_init(struct UartDriver *Uart, uint8_t device_id, uint8_t plic_source_id)
 {
+    XUartNs550_Config uart_config = { device_id, 0, 0, 0 };
     switch (device_id)
     {
 #if BSP_USE_UART0
     case 0:
         Uart->Device = UartNs550_0;
+        uart_config.BaseAddress = XPAR_UARTNS550_0_BASEADDR;
+        uart_config.InputClockHz = XPAR_UARTNS550_0_CLOCK_HZ;
+        uart_config.DefaultBaudRate = XPAR_UARTNS550_0_BAUD_RATE;
         break;
 #endif
 #if BSP_USE_UART1
     case 1:
         Uart->Device = UartNs550_1;
+        uart_config.BaseAddress = XPAR_UARTNS550_1_BASEADDR;
+        uart_config.InputClockHz = XPAR_UARTNS550_1_CLOCK_HZ;
+        uart_config.DefaultBaudRate = XPAR_UARTNS550_1_BAUD_RATE;
         break;
 #endif
     default:
@@ -187,7 +194,7 @@ static void uart_init(struct UartDriver *Uart, uint8_t device_id, uint8_t plic_s
     };
 
     /* Initialize the UartNs550 driver so that it's ready to use */
-    XUartNs550_Initialize(&Uart->Device, device_id);
+    XUartNs550_CfgInitialize(&Uart->Device, &uart_config, uart_config.BaseAddress);
 
     /* Perform a self-test to ensure that the hardware was built correctly */
     /* configASSERT(XUartNs550_SelfTest(&Uart->Device) == XST_SUCCESS); */
