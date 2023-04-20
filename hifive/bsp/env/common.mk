@@ -3,11 +3,11 @@
 ifndef _SIFIVE_MK_COMMON
 _SIFIVE_MK_COMMON := # defined
 
-include $(BSP_BASE)/libwrap/libwrap.mk
+include $(BSP_SRC)/libwrap/libwrap.mk
 
 all:
 
-ENV_DIR = $(BSP_BASE)/env
+ENV_DIR = $(BSP_SRC)/env
 PLATFORM_DIR = $(ENV_DIR)/$(BOARD)
 
 ASM_SRCS += $(ENV_DIR)/start.S
@@ -16,8 +16,8 @@ C_SRCS += $(PLATFORM_DIR)/init.c
 
 LINKER_SCRIPT := $(PLATFORM_DIR)/$(LINK_TARGET).lds
 
-ISP_INCLUDES += -I$(BSP_BASE)/include
-ISP_INCLUDES += -I$(BSP_BASE)/drivers/
+ISP_INCLUDES += -I$(BSP_SRC)/include
+ISP_INCLUDES += -I$(BSP_SRC)/drivers/
 ISP_INCLUDES += -I$(ENV_DIR)
 ISP_INCLUDES += -I$(PLATFORM_DIR)
 
