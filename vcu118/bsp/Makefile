@@ -15,7 +15,6 @@ RISCV_ABI ?= lp64d
 
 CFLAGS += --target=riscv64-unknown-elf
 CFLAGS += -mcmodel=medany
-CFLAGS += -DCPU_CLOCK_HZ=100000000
 CFLAGS += -DRV64
 endif
 
@@ -23,7 +22,7 @@ CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 
 LIB_TARGET = libvcu118.a
 
-CFLAGS += -I$(ISP_PREFIX)/include -I$(ISP_PREFIX)/local/include -I$(ISP_PREFIX)/vcu118_bsp \
+CFLAGS += -I$(ISP_PREFIX)/include -I$(ISP_PREFIX)/local/include -I$(ISP_PREFIX)/bsp/vcu118/ap/include \
           -I$(BASE_DIR) \
           -I$(BASE_DIR)/wrap \
           -ffunction-sections \
