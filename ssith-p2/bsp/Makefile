@@ -3,26 +3,18 @@ BASE_DIR = $(abspath .)
 CFLAGS := -DALIGN_UART -DFPGA_GFE
 
 CC 							 := $(ISP_PREFIX)/bin/clang
-ifneq ($(ARCH), rv64)
-RISCV_ARCH 			 ?= rv32ima
-RISCV_ABI        ?= ilp32
-CFLAGS += --target=riscv32-unknown-elf
-CFLAGS += -DCPU_CLOCK_HZ=50000000
-CFLAGS += -DRV32
-else
+
 RISCV_ARCH ?= rv64imafd
 RISCV_ABI ?= lp64d
 
 CFLAGS += --target=riscv64-unknown-elf
 CFLAGS += -mcmodel=medany
 CFLAGS += -DRV64
-endif
-
 CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 
 LIB_TARGET = libvcu118.a
 
-CFLAGS += -I$(ISP_PREFIX)/include -I$(ISP_PREFIX)/local/include -I$(ISP_PREFIX)/bsp/vcu118/ap/include \
+CFLAGS += -I$(ISP_PREFIX)/include -I$(ISP_PREFIX)/local/include -I$(ISP_PREFIX)/bsp/ssith-p2/ap/include \
           -I$(BASE_DIR) \
           -I$(BASE_DIR)/wrap \
           -ffunction-sections \
