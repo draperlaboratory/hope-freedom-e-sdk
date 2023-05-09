@@ -1,9 +1,16 @@
 ISP_PREFIX ?= $(HOME)/.local/isp/
 
-install-%: %
-	mkdir -p $(ISP_PREFIX)/bsp/$^/ap/src
-	cp -r $^/bsp/* $(ISP_PREFIX)/bsp/$^/ap/src
+libbsp-%: %
+	$(MAKE) -C $< -f Makefile.bsp libbsp
 
-install: install-hifive install-ssith-p1 install-ssith-p2 install-iveia
+install-%: % libbsp-%
+	$(MAKE) -C $< -f Makefile.bsp install
 
-clean:
+clean-%: %
+	$(MAKE) -C $< -f Makefile.bsp clean
+
+libbsp: libbsp-hifive libbsp-ssith-p1 libbsp-ssith-p2
+
+install: install-hifive install-ssith-p1 install-ssith-p2
+
+clean: clean-hifive clean-ssith-p1 clean-ssith-p2

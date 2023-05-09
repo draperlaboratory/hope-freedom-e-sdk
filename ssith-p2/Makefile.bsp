@@ -37,7 +37,7 @@ ASM_SRCS = boot.S
 OBJS   = $(patsubst %.c,%.o,$(C_SRCS))
 OBJS   += $(patsubst %.S,%.o,$(ASM_SRCS))
 
-.PHONY: all clean install
+.PHONY: all libbsp clean install
 
 all: $(LIB_TARGET)
 
@@ -49,6 +49,8 @@ all: $(LIB_TARGET)
 
 $(LIB_TARGET): $(OBJS)
 	ar rcs $@ $(OBJS)
+
+libbsp: $(LIB_TARGET)
 
 install: $(LIB_TARGET) link.ld
 	mkdir -p $(INSTALL_DIR)/lib

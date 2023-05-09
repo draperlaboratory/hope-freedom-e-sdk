@@ -40,9 +40,9 @@ include $(BSP_BASE)/env/common.mk
 $(LIBBSP): $(C_OBJS) $(ASM_OBJS) $(LIBWRAP_OBJS)
 	$(AR) rcs $@ $^
 
-all: libbsp
+.PHONY: all libbsp install clean
 
-.PHONY: libwrap install-libwrap clean-libwrap
+all: $(LIBBSP)
 
 libbsp: $(LIBBSP)
 

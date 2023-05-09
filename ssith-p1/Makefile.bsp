@@ -11,7 +11,6 @@ RISCV_ARCH ?= rv32ima
 RISCV_ABI ?= ilp32
 
 CFLAGS += --target=riscv32-unknown-elf
-CFLAGS += -DCPU_CLOCK_HZ=50000000
 CFLAGS += -DRV32
 CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 
@@ -37,7 +36,7 @@ ASM_SRCS = boot.S
 OBJS   = $(patsubst %.c,%.o,$(C_SRCS))
 OBJS   += $(patsubst %.S,%.o,$(ASM_SRCS))
 
-.PHONY: all clean install
+.PHONY: all libbsp clean install
 
 all: $(LIB_TARGET)
 
@@ -49,6 +48,8 @@ all: $(LIB_TARGET)
 
 $(LIB_TARGET): $(OBJS)
 	ar rcs $@ $(OBJS)
+
+libbsp: $(LIB_TARGET)
 
 install: $(LIB_TARGET) link.ld
 	mkdir -p $(INSTALL_DIR)/lib
