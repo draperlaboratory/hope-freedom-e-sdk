@@ -14,7 +14,7 @@ CFLAGS += --target=riscv32-unknown-elf
 CFLAGS += -DRV32
 CFLAGS += -O0 -g3 -Wall -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
 
-LIB_TARGET = libbsp.a
+LIB_TARGET = libfreedom-e-sdk.a
 
 CFLAGS += -I$(ISP_PREFIX)/include -I$(ISP_PREFIX)/local/include -I$(ISP_PREFIX)/bsp/ssith-p1/ap/include \
           -I$(BASE_DIR) \
@@ -48,7 +48,6 @@ install: $(LIB_TARGET) link.ld
 	mkdir -p $(INSTALL_DIR)/lib
 	mkdir -p $(INSTALL_DIR)/include
 	cp $(LIB_TARGET) $(INSTALL_DIR)/lib
-	cp uart.h $(INSTALL_DIR)/include
 	cp link.ld $(INSTALL_DIR)
 
 clean:
