@@ -1,2 +1,0 @@
-install:
-	cp link.ld $(INSTALL_DIR)

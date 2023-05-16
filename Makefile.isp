@@ -9,8 +9,8 @@ install-%: % libbsp-%
 clean-%: %
 	$(MAKE) -C $< -f Makefile.bsp clean
 
-libbsp: libbsp-hifive libbsp-ssith-p1 libbsp-ssith-p2
+libbsp: libbsp-hifive
 
-install: install-hifive install-ssith-p1 install-ssith-p2
+install: install-hifive
 
-clean: clean-hifive clean-ssith-p1 clean-ssith-p2
+clean: clean-hifive
