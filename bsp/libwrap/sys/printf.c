@@ -13,6 +13,8 @@
 #include "stub.h"
 #include "weak_under_alias.h"
 
+extern int __wrap_puts(const char *s);
+
 int __wrap_printf(const char *s, ...)
 {
     char buf[256];
