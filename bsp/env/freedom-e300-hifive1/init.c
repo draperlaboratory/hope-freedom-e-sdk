@@ -190,7 +190,7 @@ static void uart_init(size_t baud_rate)
 void handle_pipe_violation()
 {
    const uint32_t fail = SIFIVE_TEST_FAIL;
-   uint32_t *td_addr = TEST_MEM_ADDR;
+   uint32_t *td_addr = (uint32_t *)TEST_MEM_ADDR;
 
    printf("Bare PIPE Violation.\n");
    printf("MSG:  End test.\n");
