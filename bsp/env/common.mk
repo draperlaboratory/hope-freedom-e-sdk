@@ -32,16 +32,10 @@ ISP_DEPS += $(LINKER_SCRIPT)
 
 ISP_CLEAN += $(ISP_OBJECTS)
 
-ISP_CFLAGS += -g
-ISP_CFLAGS += -march=$(RISCV_ARCH)
-ISP_CFLAGS += -mabi=$(RISCV_ABI)
-
-ISP_ASMFLAGS = $(ISP_CFLAGS)
-
 $(ASM_OBJS): %.o: %.S $(ISP_HEADERS)
-	$(CC) $(ISP_ASMFLAGS) $(ISP_INCLUDES) -c -o $@ $<
+	$(CC) $(ASMFLAGS) $(ISP_INCLUDES) -c -o $@ $<
 
 $(C_OBJS): %.o: %.c $(ISP_HEADERS)
-	$(CC) $(ISP_CFLAGS) $(ISP_INCLUDES) -c -o $@ $<
+	$(CC) $(CFLAGS) $(ISP_INCLUDES) -c -o $@ $<
 
 endif # _SIFIVE_MK_COMMON
