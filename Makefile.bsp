@@ -79,4 +79,4 @@ install: all soc_hifive.yml
 	cp soc_hifive.yml $(BSP_INSTALL)/config/soc_$(SOC).yml
 
 clean:
-	rm -rf $(BINDIR)
+	rm -rf $(BINDIR) $(OBJDIR)

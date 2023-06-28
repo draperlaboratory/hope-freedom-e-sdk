@@ -1,0 +1,14 @@
+.PHONY: all clean install
+
+all:
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive32 OBJDIR=obj/hifive32 SOC=hifive32 all
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive64 OBJDIR=obj/hifive64 SOC=hifive64 all
+
+clean:
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive32 OBJDIR=obj/hifive32 SOC=hifive32 clean
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive64 OBJDIR=obj/hifive64 SOC=hifive64 clean
+	rmdir bin obj
+
+install:
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive32 OBJDIR=obj/hifive32 SOC=hifive32 install
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive64 OBJDIR=obj/hifive64 SOC=hifive64 install
