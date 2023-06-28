@@ -1,0 +1,103 @@
+SOC:
+  RAM_0: {
+    name:  SOC.MEMORY.RAM_0,
+    start: 0x80000000,
+    end:   0x8FFFFFFF,
+    heterogeneous: true
+    }
+  FLASH_0: {
+    name:  SOC.MEMORY.FLASH_0,
+    start: 0x20000000,
+    end:   0x3FFFFFFF,
+    heterogeneous: true
+    }
+  DEBUG: {
+    name:  SOC.MMIO.DEBUG,
+    start: 0x0,
+    end:   0x1FFFFFF,
+    heterogeneous: false
+    }
+  TEST: {
+    name:  SOC.MMIO.TEST,
+    start: 0x1000000,
+    end:   0x1000FFF,
+    heterogeneous: false
+    }
+  CLINT: {
+    name:  SOC.MMIO.CLINT,
+    start: 0x2000000,
+    end:   0x200FFFF,
+    heterogeneous: false
+    }
+  ITIM: {
+    name:  SOC.MMIO.ITIM,
+    start: 0x8000000,
+    end:   0x8001FFF,
+    heterogeneous: false
+    }
+  PLIC: {
+    name:  SOC.MMIO.PLIC,
+    start: 0xC000000,
+    end:   0xFFFFFFF,
+    heterogeneous: false
+    }
+  AON: {
+    name:  SOC.MMIO.AON,
+    start: 0x10000000,
+    end:   0x10007FFF,
+    heterogeneous: false
+    }
+  PRCI: {
+    name:  SOC.MMIO.PRCI,
+    start: 0x10008000,
+    end:   0x1000FFFF,
+    heterogeneous: false
+    }
+  OTP: {
+    name:  SOC.MMIO.OTP,
+    start: 0x10010000,
+    end:   0x10010FFF,
+    heterogeneous: false
+    }
+  EFLASH: {
+    name:  SOC.MMIO.EFLASH,
+    start: 0x10011000,
+    end:   0x10011FFF,
+    heterogeneous: false
+    }
+  GPIO_0: {
+    name:  SOC.MMIO.GPIO_0,
+    start: 0x10012000,
+    end:   0x10012FFF,
+    heterogeneous: false
+    }
+  UART_0: {
+    name:  SOC.MMIO.UART_0,
+    start: 0x10013000,
+    end:   0x10013FFF,
+    heterogeneous: false
+    }
+  QSPI_0: {
+    name:  SOC.MMIO.QSPI_0,
+    start: 0x10014000,
+    end:   0x10014FFF,
+    heterogeneous: false
+    }
+  GEM0: {
+    name:  SOC.MMIO.GEM0,
+    start: 0x10090000,
+    end:   0x10091FFF,
+    heterogeneous: false
+    }
+  MTIME: {
+    name:  SOC.MMIO.MTIME,
+    start: 0x4400BFF8,
+    end:   0x4400BFFF,
+    heterogeneous: false
+    }
+  MTIME_CMP: {
+    name:  SOC.MMIO.MTIME_CMP,
+    start: 0x44004000,
+    end:   0x4400400F,
+    heterogeneous: false
+    }
