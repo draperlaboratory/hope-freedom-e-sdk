@@ -7,7 +7,7 @@ all:
 clean:
 	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive32 OBJDIR=obj/hifive32 SOC=hifive32 clean
 	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive64 OBJDIR=obj/hifive64 SOC=hifive64 clean
-	rmdir bin obj
+	rm -rf bin obj
 
 install:
 	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive32 OBJDIR=obj/hifive32 SOC=hifive32 install
