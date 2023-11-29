@@ -1,0 +1,82 @@
+BASE_DIR := $(abspath .)
+SOC ?= hifive32
+
+##################################
+# Copied from hope-bsp/common.mk #
+##################################
+ISP_PREFIX ?= $(HOME)/.local/isp/
+
+OBJDIR ?= $(BASE_DIR)/obj
+BINDIR ?= $(BASE_DIR)/bin
+
+CFLAGS = -O3 -Wall -Werror
+CFLAGS += -Isrc/dev -I$(ISP_PREFIX)/local/include
+CFLAGS += -fdata-sections -ffunction-sections -fno-builtin-printf -mno-relax
+ASMFLAGS = -mno-relax
+
+#############################################
+# Copied from generated hope-bsp/gen/gen.mk #
+#############################################
+ifeq ("$(SOC)","hifive32")
+	RISCV_ARCH ?= rv32ima
+	RISCV_ABI  ?= ilp32
+	RISCV_TARGET = riscv32-unknown-elf
+else
+	RISCV_ARCH ?= rv64g
+	RISCV_ABI  ?= lp64d
+	RISCV_TARGET = riscv64-unknown-elf
+	CFLAGS += -mcmodel=medany
+endif
+CFLAGS     += -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
+ASMFLAGS   += -march=$(RISCV_ARCH) -mabi=$(RISCV_ABI)
+
+##############################################
+# Copied from hope-bsp/soc/hifiveXX/Makefile #
+##############################################
+CC = $(ISP_PREFIX)/bin/clang --sysroot=$(ISP_PREFIX)/clang_sysroot/riscv64-unknown-elf --target=$(RISCV_TARGET)
+AR = riscv64-unknown-elf-gcc-ar
+
+CFLAGS += -I$(BINDIR)/include
+
+BOARD ?= freedom-e300-hifive1
+LINK_TARGET ?= flash
+
+# This is actually the freedom-e-sdk BSP_BASE
+BSP_BASE := $(BASE_DIR)/bsp
+CFLAGS += -I$(BSP_BASE)/env
+include $(BSP_BASE)/env/common.mk
+HIFIVE_OBJ = $(C_OBJS) $(ASM_OBJS) $(LIBWRAP_OBJS)
+
+HIFIVE_ENV_H   = $(BSP_BASE)/env/encoding.h $(BSP_BASE)/env/hifive1.h
+HIFIVE_BOARD_H = $(wildcard $(BSP_BASE)/env/$(BOARD)/*.h)
+SIFIVE_H       = $(wildcard $(BSP_BASE)/include/*)
+
+HIFIVE_LINK = $(BSP_BASE)/env/$(BOARD)/$(LINK_TARGET).lds
+
+BSP_OBJ = $(HIFIVE_OBJ:$(BSP_BASE)/%=$(OBJDIR)/%)
+
+$(BSP_OBJ): $(OBJDIR)/%: $(BSP_BASE)/%
+	mkdir -p $(@D)
+	mv $< $@
+
+LIBBSP ?= $(BINDIR)/lib/libbsp.a
+$(LIBBSP): $(BSP_OBJ)
+	mkdir -p $(@D)
+	$(AR) rcs $@ $^
+
+.PHONY: all clean install
+
+all: $(LIBBSP)
+	mkdir -p $(BINDIR)/include
+	cp -R $(HIFIVE_ENV_H) $(HIFIVE_BOARD_H) $(SIFIVE_H) $(BINDIR)/include
+	cp $(HIFIVE_LINK) $(BINDIR)
+
+BSP_INSTALL ?= $(ISP_PREFIX)/bsp/$(SOC)
+install: all soc_hifive.yml
+	mkdir -p $(BSP_INSTALL)/ap
+	mkdir -p $(BSP_INSTALL)/config
+	cp -R $(wildcard $(BINDIR)/*) $(BSP_INSTALL)/ap
+	cp soc_hifive.yml $(BSP_INSTALL)/config/soc_$(SOC).yml
+
+clean:
+	rm -rf $(BINDIR) $(OBJDIR)

@@ -2,6 +2,7 @@
 *.a
 work/
 toolchain/
+/bin/
 
 software/coremark/coremark
 software/coreplexip_welcome/coreplexip_welcome

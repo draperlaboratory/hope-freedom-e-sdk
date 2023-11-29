@@ -1,10 +1,14 @@
-ISP_PREFIX ?= $(HOME)/.local/isp/
+.PHONY: all clean install
+
+all:
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive32 OBJDIR=obj/hifive32 SOC=hifive32 all
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive64 OBJDIR=obj/hifive64 SOC=hifive64 all
+
+clean:
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive32 OBJDIR=obj/hifive32 SOC=hifive32 clean
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive64 OBJDIR=obj/hifive64 SOC=hifive64 clean
+	rm -rf bin obj
 
 install:
-	mkdir -p $(ISP_PREFIX)/hifive_bsp
-	cp -r freedom-e-sdk/bsp/* $(ISP_PREFIX)/hifive_bsp/
-	mkdir -p $(ISP_PREFIX)/vcu118_bsp
-	cp -r vcu118/* $(ISP_PREFIX)/vcu118_bsp/
-	mkdir -p $(ISP_PREFIX)/iveia_bsp
-	cp -r iveia/* $(ISP_PREFIX)/iveia_bsp/
-clean:
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive32 OBJDIR=obj/hifive32 SOC=hifive32 install
+	$(MAKE) -f Makefile.bsp BINDIR=bin/hifive64 OBJDIR=obj/hifive64 SOC=hifive64 install
